@@ -58,32 +58,34 @@ public class UserRegistrationServiceimpl extends IntentService implements UserRe
     }
     @Override
     protected void onHandleIntent(Intent intent) {
-        if (intent != null) {
-            final String action = intent.getAction();
-            if (ACTION_ADD.equals(action)) {
-                final UserRegistration personContact = (UserRegistration)intent.getSerializableExtra(EXTRA_ADD);
-
-                postAddress(personContact);
-            } else if (ACTION_UPDATE.equals(action)) {
-                final UserRegistration person = (UserRegistration)intent.getSerializableExtra(EXTRA_UPDATE);;
-                updateaddress(person);
-            }
-        }
+       try{
+           if (intent != null) {
+               final String action = intent.getAction();
+               if (ACTION_ADD.equals(action)) {
+                   final UserRegistration userRegistrationResourse = (UserRegistration)intent.getSerializableExtra(EXTRA_ADD);
+                   UserRegistration userRegistration = new UserRegistration.Builder()
+                           .name(userRegistrationResourse.getName())
+                           .gender(userRegistrationResourse.getGender())
+                           .useremail(userRegistrationResourse.getUseremail())
+                           .newPassword(userRegistrationResourse.getNewPassword())
+                           .build();
+                   repo.save(userRegistration);
+               } else if (ACTION_UPDATE.equals(action)) {
+                   final UserRegistration userRegistrationResourse = (UserRegistration)intent.getSerializableExtra(EXTRA_ADD);
+                   UserRegistration updateRegistration = new UserRegistration.Builder()
+                           .name(userRegistrationResourse.getName())
+                           .gender(userRegistrationResourse.getGender())
+                           .useremail(userRegistrationResourse.getUseremail())
+                           .newPassword(userRegistrationResourse.getNewPassword())
+                           .build();
+                   repo.update(updateRegistration);
+               }
+           }
+       }
+       catch (Exception e)
+       {
+           e.printStackTrace();
+       }
     }
 
-    public void postAddress(UserRegistration person)
-    {
-        try {
-            repo.save(person);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    public void updateaddress(UserRegistration person) {
-        try {
-            repo.save(person);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }

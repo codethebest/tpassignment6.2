@@ -1,9 +1,11 @@
 package com.example.leo.tpassignment61.domain.event;
 
+import java.io.Serializable;
+
 /**
  * Created by Leo on 4/18/2016.
  */
-public class EventContact {
+public class EventContact implements Serializable {
 
     private Long id;
     private String phone;

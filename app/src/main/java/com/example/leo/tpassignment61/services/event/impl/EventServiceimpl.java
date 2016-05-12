@@ -59,32 +59,34 @@ public class EventServiceimpl extends IntentService implements EventContactServi
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
-        if (intent != null) {
-            final String action = intent.getAction();
-            if (ACTION_ADD.equals(action)) {
-                final Event event = (Event)intent.getSerializableExtra(EXTRA_ADD);
+    protected void onHandleIntent(Intent intent){
+        try {
+            if (intent != null) {
+                final String action = intent.getAction();
+                if (ACTION_ADD.equals(action)) {
+                    final Event event = (Event) intent.getSerializableExtra(EXTRA_ADD);
+                    Event createEvent = new Event.Builder()
+                            .name(event.getName())
+                            .tagline(event.getTagline())
+                            .description(event.getDescription())
+                            .host(event.getHost())
+                            .build();
+                    repo.save(createEvent);
 
-                postAddress(event);
-            } else if (ACTION_UPDATE.equals(action)) {
-                final Event event = (Event)intent.getSerializableExtra(EXTRA_UPDATE);;
-                updateaddress(event);
+                } else if (ACTION_UPDATE.equals(action)) {
+                    final Event event = (Event) intent.getSerializableExtra(EXTRA_UPDATE);
+                    Event updateEvent = new Event.Builder()
+                            .name(event.getName())
+                            .tagline(event.getTagline())
+                            .description(event.getDescription())
+                            .host(event.getHost())
+                            .build();
+                    repo.update(updateEvent);
+                }
             }
         }
-    }
-
-    public void postAddress(Event event)
-    {
-        try {
-            repo.save(event);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    public void updateaddress(Event event) {
-        try {
-            repo.save(event);
-        } catch (SQLException e) {
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }

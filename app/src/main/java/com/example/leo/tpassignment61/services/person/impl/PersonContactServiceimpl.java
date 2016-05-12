@@ -58,33 +58,34 @@ public class PersonContactServiceimpl extends IntentService implements PersonCon
     }
     @Override
     protected void onHandleIntent(Intent intent) {
-        if (intent != null) {
-            final String action = intent.getAction();
-            if (ACTION_ADD.equals(action)) {
-                final PersonContact personContact = (PersonContact)intent.getSerializableExtra(EXTRA_ADD);
+        try {
+            if (intent != null) {
+                final String action = intent.getAction();
+                if (ACTION_ADD.equals(action)) {
+                    PersonContact personContact = (PersonContact) intent.getSerializableExtra(EXTRA_ADD);
+                    PersonContact createPersonContact = new PersonContact.Builder()
+                            .email(personContact.getEmail())
+                            .mobile(personContact.getMobile())
+                            .screenName(personContact.getScreenName())
+                            .website(personContact.getWebsite())
+                            .build();
+                    repo.save(createPersonContact);
+                } else if (ACTION_UPDATE.equals(action)) {
+                    PersonContact personContact = (PersonContact) intent.getSerializableExtra(EXTRA_UPDATE);
 
-                postAddress(personContact);
-            } else if (ACTION_UPDATE.equals(action)) {
-                final PersonContact personContact = (PersonContact)intent.getSerializableExtra(EXTRA_UPDATE);;
-                updateaddress(personContact);
+                    PersonContact updatePersonContact = new PersonContact.Builder()
+                            .email(personContact.getEmail())
+                            .mobile(personContact.getMobile())
+                            .screenName(personContact.getScreenName())
+                            .website(personContact.getWebsite())
+                            .build();
+                    repo.update(updatePersonContact);
+                }
             }
         }
-    }
-
-    public void postAddress(PersonContact personAddress)
-    {
-        try {
-            repo.save(personAddress);
-        } catch (SQLException e) {
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
-    public void updateaddress(PersonContact personAddress) {
-        try {
-            repo.save(personAddress);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
 }

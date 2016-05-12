@@ -1,11 +1,12 @@
 package com.example.leo.tpassignment61.domain.person;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Leo on 4/18/2016.
  */
-public class PersonBasicInformation {
+public class PersonBasicInformation implements Serializable {
 
     private String sex;
     private String hometown;

@@ -35,14 +35,14 @@ public class CommentOnPostServiceimpl extends IntentService implements CommentOn
         repo = new CommentOnPostRepositoryImp(App.getAppContext());
     }
 
-    public static void postAnComment(Context context, CommentOnPost comment) {
+    public void postAnComment(Context context, CommentOnPost comment) {
         Intent intent = new Intent(context, CommentOnPostServiceimpl.class);
         intent.setAction(ACTION_POST);
         intent.putExtra(EXTRA_POST, comment);
         context.startService(intent);
     }
 
-    public static void editComment(Context context, CommentOnPost comment) {
+    public void editComment(Context context, CommentOnPost comment) {
         Intent intent = new Intent(context, CommentOnPostServiceimpl.class);
         intent.setAction(ACTION_POST);
         intent.putExtra(EXTRA_EDIT, comment);
@@ -51,33 +51,28 @@ public class CommentOnPostServiceimpl extends IntentService implements CommentOn
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        if (intent != null) {
-            final String action = intent.getAction();
-            if (ACTION_POST.equals(action)) {
-                final CommentOnPost commentOnPost = (CommentOnPost)intent.getSerializableExtra(EXTRA_POST);
-                postCommentOn(commentOnPost);
-            } else if (ACTION_EDIT.equals(action)) {
-                final CommentOnPost commentOnPost = (CommentOnPost)intent.getSerializableExtra(EXTRA_EDIT);
-                editCommentOn(commentOnPost);
+        try {
+            if (intent != null) {
+                final String action = intent.getAction();
+                if (ACTION_POST.equals(action)) {
+                    final CommentOnPost commentOnPostResourse = (CommentOnPost) intent.getSerializableExtra(EXTRA_POST);
+                    CommentOnPost commentOnPost = new CommentOnPost.Builder()
+                            .post(commentOnPostResourse.getPost())
+                            .date(commentOnPostResourse.getDate())
+                            .build();
+                    repo.save(commentOnPost);
+                } else if (ACTION_EDIT.equals(action)) {
+                    final CommentOnPost commentOnPostResourse = (CommentOnPost) intent.getSerializableExtra(EXTRA_POST);
+                    CommentOnPost commentOnPost = new CommentOnPost.Builder()
+                            .post(commentOnPostResourse.getPost())
+                            .date(commentOnPostResourse.getDate())
+                            .build();
+                    repo.update(commentOnPost);
+                }
             }
         }
-    }
+        catch (Exception e){e.printStackTrace();}
 
-    public void postCommentOn(CommentOnPost commentOnPost) {
-        //POST and Save Local
-        try {
-            repo.save(commentOnPost);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
-    public void editCommentOn(CommentOnPost commentOnPost) {
-        //POST and Save Local
-        try {
-            repo.save(commentOnPost);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
 }
+

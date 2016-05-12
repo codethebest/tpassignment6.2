@@ -1,11 +1,12 @@
 package com.example.leo.tpassignment61.domain.user;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Leo on 4/24/2016.
  */
-public class CommentOnPost {
+public class CommentOnPost implements Serializable {
 
     private Long id;
     private String post;

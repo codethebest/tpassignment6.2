@@ -43,7 +43,7 @@ public class EventAddressServiceimpl extends IntentService implements EventAddre
     @Override
     public void addPEventAddress(Context context,EventAddress address)
     {
-        Intent intent = new Intent (context,EventBasicInformationServiceimpl.class);
+        Intent intent = new Intent (context,EventAddressServiceimpl.class);
         intent.setAction(ACTION_ADD);
         intent.putExtra(EXTRA_ADD, address);
         context.startService(intent);
@@ -52,41 +52,43 @@ public class EventAddressServiceimpl extends IntentService implements EventAddre
     @Override
     public void updateEventAddress(Context context,EventAddress address)
     {
-        Intent intent =new Intent(context,EventBasicInformationServiceimpl.class);
+        Intent intent =new Intent(context,EventAddressServiceimpl.class);
         intent.setAction(ACTION_ADD);
         intent.putExtra(EXTRA_UPDATE, address);
         context.startService(intent);
     }
+
     @Override
     protected void onHandleIntent(Intent intent) {
-        if (intent != null) {
-            final String action = intent.getAction();
-            if (ACTION_ADD.equals(action)) {
-                final EventAddress personAddress = (EventAddress)intent.getSerializableExtra(EXTRA_ADD);
+        try {
+            if (intent != null) {
+                final String action = intent.getAction();
+                if (ACTION_ADD.equals(action)) {
+                    final EventAddress eventAddressResources = (EventAddress) intent.getSerializableExtra(EXTRA_ADD);
+                    EventAddress updateeventAddress = new EventAddress.Builder()
+                            .city(eventAddressResources.getCity())
+                            .country(eventAddressResources.getCountry())
+                            .street(eventAddressResources.getStreet())
+                            .sub(eventAddressResources.getSub())
+                            .build();
+                    repo.save(updateeventAddress);
 
-                postAddress(personAddress);
-            } else if (ACTION_UPDATE.equals(action)) {
-                final EventAddress personAddress = (EventAddress)intent.getSerializableExtra(EXTRA_UPDATE);;
-                updateaddress(personAddress);
+                } else if (ACTION_UPDATE.equals(action)) {
+                    final EventAddress eventAddressResources = (EventAddress) intent.getSerializableExtra(EXTRA_UPDATE);
+                    EventAddress updateeventAddress = new EventAddress.Builder()
+                            .city(eventAddressResources.getCity())
+                            .country(eventAddressResources.getCountry())
+                            .street(eventAddressResources.getStreet())
+                            .sub(eventAddressResources.getSub())
+                            .build();
+                    repo.save(updateeventAddress);
+                }
             }
         }
-    }
-
-    public void postAddress(EventAddress eventAddress)
-    {
-        try {
-            repo.save(eventAddress);
-        } catch (SQLException e) {
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
-    public void updateaddress(EventAddress eventAddress) {
-        try {
-            repo.save(eventAddress);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
 }
 

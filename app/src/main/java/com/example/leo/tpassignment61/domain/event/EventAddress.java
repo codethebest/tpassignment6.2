@@ -1,9 +1,11 @@
 package com.example.leo.tpassignment61.domain.event;
 
+import java.io.Serializable;
+
 /**
  * Created by Leo on 4/18/2016.
  */
-public class EventAddress
+public class EventAddress implements Serializable
 {
         private String street;
         private String sub;

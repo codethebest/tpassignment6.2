@@ -58,33 +58,33 @@ public class PostAnEventServiceimpl extends IntentService implements PostAnEvent
     }
     @Override
     protected void onHandleIntent(Intent intent) {
-        if (intent != null) {
-            final String action = intent.getAction();
-            if (ACTION_ADD.equals(action)) {
-                final PostAnEvent personContact = (PostAnEvent)intent.getSerializableExtra(EXTRA_ADD);
-
-                postAddress(personContact);
-            } else if (ACTION_UPDATE.equals(action)) {
-                final PostAnEvent postAnEvent = (PostAnEvent)intent.getSerializableExtra(EXTRA_UPDATE);;
-                updateaddress(postAnEvent);
+        try{
+            if (intent != null) {
+                final String action = intent.getAction();
+                if (ACTION_ADD.equals(action)) {
+                    final PostAnEvent postAnEventResourse = (PostAnEvent)intent.getSerializableExtra(EXTRA_ADD);
+                    PostAnEvent postAnEvent = new PostAnEvent.Builder()
+                            .tagline(postAnEventResourse.getTagline())
+                            .post(postAnEventResourse.getPost())
+                            .date(postAnEventResourse.getDate())
+                            .build();
+                    repo.save(postAnEvent);
+                } else if (ACTION_UPDATE.equals(action)) {
+                    final PostAnEvent postAnEventResourse = (PostAnEvent)intent.getSerializableExtra(EXTRA_ADD);
+                    PostAnEvent updatetAnEvent = new PostAnEvent.Builder()
+                            .tagline(postAnEventResourse.getTagline())
+                            .post(postAnEventResourse.getPost())
+                            .date(postAnEventResourse.getDate())
+                            .build();
+                    repo.save(updatetAnEvent);
+                }
             }
         }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
-    public void postAddress(PostAnEvent postAnEvent)
-    {
-        try {
-            repo.save(postAnEvent);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    public void updateaddress(PostAnEvent postAnEvent) {
-        try {
-            repo.save(postAnEvent);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }
 

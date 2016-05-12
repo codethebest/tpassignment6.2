@@ -1,11 +1,12 @@
 package com.example.leo.tpassignment61.domain.event;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Leo on 4/18/2016.
  */
-public class EventBasicInformation {
+public class EventBasicInformation implements Serializable {
 
     private Date start;
     private Date end;

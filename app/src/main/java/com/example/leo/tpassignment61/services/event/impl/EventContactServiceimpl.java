@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.example.leo.tpassignment61.conf.databases.App;
+import com.example.leo.tpassignment61.domain.event.Event;
 import com.example.leo.tpassignment61.domain.event.EventContact;
 import com.example.leo.tpassignment61.repository.event.EventContactRepository;
 import com.example.leo.tpassignment61.repository.event.impl.EventContactRepositoryimpl;
@@ -58,33 +59,31 @@ public class EventContactServiceimpl extends IntentService implements EventConta
     }
     @Override
     protected void onHandleIntent(Intent intent) {
-        if (intent != null) {
-            final String action = intent.getAction();
-            if (ACTION_ADD.equals(action)) {
-                final EventContact personContact = (EventContact)intent.getSerializableExtra(EXTRA_ADD);
-
-                postAddress(personContact);
-            } else if (ACTION_UPDATE.equals(action)) {
-                final EventContact personContact = (EventContact)intent.getSerializableExtra(EXTRA_UPDATE);;
-                updateaddress(personContact);
+        try {
+            if (intent != null) {
+                final String action = intent.getAction();
+                if (ACTION_ADD.equals(action)) {
+                    EventContact eventContact = (EventContact) intent.getSerializableExtra(EXTRA_ADD);
+                    EventContact createEventContact = new EventContact.Builder()
+                            .email(eventContact.getEmail())
+                            .phone(eventContact.getPhone())
+                            .website(eventContact.getWebsite())
+                            .build();
+                    repo.save(createEventContact);
+                } else if (ACTION_UPDATE.equals(action)) {
+                    EventContact eventContact = (EventContact) intent.getSerializableExtra(EXTRA_UPDATE);
+                    EventContact updatePersonContact = new EventContact.Builder()
+                            .email(eventContact.getEmail())
+                            .phone(eventContact.getPhone())
+                            .website(eventContact.getWebsite())
+                            .build();
+                    repo.update(updatePersonContact);
+                }
             }
         }
-    }
-
-    public void postAddress(EventContact personAddress)
-    {
-        try {
-            repo.save(personAddress);
-        } catch (SQLException e) {
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
-    public void updateaddress(EventContact personAddress) {
-        try {
-            repo.save(personAddress);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
 }

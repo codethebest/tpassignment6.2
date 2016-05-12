@@ -17,10 +17,10 @@ public class EventServiceimplTest extends AndroidTestCase {
     @Override
     public void setUp() throws Exception
     {
-        super.setUp();
-        Event p = EventFactory.getEvent("#BigTime","Club808","Big Time")
+        /*super.setUp();
+        Event p = EventFactory.getEvent("#BigTime","Club808","Big Time");
         Intent intent = new Intent(App.getAppContext(),EventServiceimpl.class);
         intent.putExtra(EventServiceimpl.ACTION_ADD,p);
-        App.getAppContext().startService(intent);
+        App.getAppContext().startService(intent);*/
     }
 }

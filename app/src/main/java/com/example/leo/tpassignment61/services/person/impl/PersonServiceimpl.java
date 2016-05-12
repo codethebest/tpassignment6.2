@@ -57,33 +57,37 @@ public class PersonServiceimpl extends IntentService implements PersonService{
         context.startService(intent);
     }
     @Override
-    protected void onHandleIntent(Intent intent) {
-        if (intent != null) {
-            final String action = intent.getAction();
-            if (ACTION_ADD.equals(action)) {
-                final Person personContact = (Person)intent.getSerializableExtra(EXTRA_ADD);
+    protected void onHandleIntent(Intent intent){
+        try {
+            if (intent != null) {
+                final String action = intent.getAction();
+                if (ACTION_ADD.equals(action)) {
+                    final Person person = (Person) intent.getSerializableExtra(EXTRA_ADD);
+                    Person createPerson = new Person.Builder()
+                            .name(person.getName())
+                            .surname(person.getEmail())
+                            .email(person.getEmail())
+                            .auvalue(person.getAuvalue())
+                            .build();
+                    repo.save(createPerson);
 
-                postAddress(personContact);
-            } else if (ACTION_UPDATE.equals(action)) {
-                final Person person = (Person)intent.getSerializableExtra(EXTRA_UPDATE);;
-                updateaddress(person);
+                } else if (ACTION_UPDATE.equals(action)) {
+                    final Person person = (Person) intent.getSerializableExtra(EXTRA_UPDATE);
+
+                    Person updatePerson = new Person.Builder()
+                            .name(person.getName())
+                            .surname(person.getEmail())
+                            .email(person.getEmail())
+                            .auvalue(person.getAuvalue())
+                            .build();
+                    repo.update(updatePerson);
+                }
             }
         }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
-    public void postAddress(Person person)
-    {
-        try {
-            repo.save(person);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    public void updateaddress(Person person) {
-        try {
-            repo.save(person);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }

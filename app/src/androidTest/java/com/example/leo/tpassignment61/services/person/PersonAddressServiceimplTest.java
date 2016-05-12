@@ -1,55 +1,68 @@
-package com.example.leo.tpassignment61.services.person;
-
-import android.content.ComponentName;
-import android.content.Context;
+package com.example.leo.tpassignment61.services.person;;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.IBinder;
 import android.test.AndroidTestCase;
+import java.util.*;
 
 import com.example.leo.tpassignment61.conf.databases.App;
-import com.example.leo.tpassignment61.domain.person.Person;
 import com.example.leo.tpassignment61.domain.person.PersonAddress;
-import com.example.leo.tpassignment61.factories.person.PersonAddressFactory;
-import com.example.leo.tpassignment61.factories.person.PersonFactory;
+import com.example.leo.tpassignment61.repository.person.PersonAddressRepository;
+import com.example.leo.tpassignment61.repository.person.impl.PersonAddressRepositoryimpl;
 import com.example.leo.tpassignment61.services.person.impl.PersonAddressServicesImpl;
+
+import junit.framework.Assert;
 
 /**
  * Created by Leo on 5/8/2016.
  */
-public class PersonAddressServiceimplTest extends AndroidTestCase{
+public class PersonAddressServiceimplTest extends AndroidTestCase {
     Intent intent;
+    PersonAddressRepository repo;
 
     @Override
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         super.setUp();
-        PersonAddress p = PersonAddressFactory.getAddress("satellite drive","Kwezi Prk", "South africa","cape");
-        Intent intent = new Intent(App.getAppContext(),PersonAddressServicesImpl.class);
-        intent.putExtra(PersonAddressServicesImpl.ACTION_ADD,p);
+        repo = new PersonAddressRepositoryimpl(App.getAppContext());
+    }
+
+    public void testPersonAddress() throws Exception {
+        PersonAddressService personAddressService = PersonAddressServicesImpl.getInstance();
+        PersonAddress address = new PersonAddress.Builder()
+                .city("Cape Town")
+                .country("South africa")
+                .street("Satellite Drive")
+                .sub("Kwezi Park")
+                .build();
+
+        personAddressService.addPersonAddress(App.getAppContext(), address);
+
+        PersonAddress address1 = repo.read(1L);
+        Assert.assertNotNull(address1);
+    }
+    public void testupdatePersonAddress() throws Exception
+    {
+        intent = new Intent(App.getAppContext(),PersonAddressServicesImpl.class);
+        PersonAddressService personAddressService = new PersonAddressServicesImpl();
+
+        PersonAddress updateaddress = new PersonAddress.Builder()
+                .city("Cape Town")
+                .country("South africa")
+                .street("Satellite Drive")
+                .sub("Khayelitsha")
+                .build();
+        personAddressService.updatePersonAddress(App.getAppContext(),updateaddress);
         App.getAppContext().startService(intent);
+        Assert.assertEquals("Khayelitsha", updateaddress.getSub());
     }
 
-/*    private PersonAddressServicesImpl addressServices;
-    private boolean isBound;
+    public void testNotNullOfDatabase() throws Exception {
+        Set<PersonAddress> persons = repo.readAll();
+        Assert.assertNotNull(persons);
 
-    @Override
-    public void setUp()throws Exception
-    {
-        super.setUp();
-        Intent intent = new Intent(App.getAppContext(),PersonAddressService.class);
-        App.getAppContext().bindService(intent,connection, Context.BIND_AUTO_CREATE);
     }
+/*
+    public void testSizeOfDatabase() throws Exception {
+        Set<PersonAddress> persons = repo.readAll();
+        Assert.assertEquals(persons.size(),10);
 
-    private ServiceConnection connection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-
-        }
     }*/
 }

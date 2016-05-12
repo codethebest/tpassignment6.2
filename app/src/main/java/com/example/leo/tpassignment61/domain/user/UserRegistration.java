@@ -2,10 +2,12 @@ package com.example.leo.tpassignment61.domain.user;
 
 import android.util.Log;
 
+import java.io.Serializable;
+
 /**
  * Created by Leo on 4/18/2016.
  */
-public class UserRegistration {
+public class UserRegistration implements Serializable {
 
     private Long id;
     private String name;

@@ -11,9 +11,8 @@ import java.util.Set;
 /**
  * Created by Leo on 4/25/2016.
  */
-public class PersonAddressRepositoryimplTest extends AndroidTestCase{
-
-
+public class PersonAddressRepositoryimplTest extends AndroidTestCase
+{
     private static final String TAG ="PERSONContact TEST";
     private Long id;
 
@@ -34,7 +33,7 @@ public class PersonAddressRepositoryimplTest extends AndroidTestCase{
         Assert.assertTrue(TAG + " READ ALL", personSet.size() > 0);
 
 
-        PersonAddress entity = repo.read(id);
+        PersonAddress entity = repo.read(1L);
         Assert.assertNotNull(TAG + " READ ENTITY", entity);
 
 
