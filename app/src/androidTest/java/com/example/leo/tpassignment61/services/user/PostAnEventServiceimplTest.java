@@ -19,37 +19,37 @@ import java.util.Date;
 /**
  * Created by Leo on 5/8/2016.
  */
-public class PostAnEventServiceimplTest extends AndroidTestCase{
+public class PostAnEventServiceimplTest extends AndroidTestCase
+{
     Intent intent;
     PostAnEventRepository repo;
     @Override
     public void setUp() throws Exception
     {
         super.setUp();
-        repo = new PostAnEventRepositoryImp(App.getAppContext());
+        intent = new Intent(App.getAppContext(),PostAnEventServiceimpl.class);
     }
     Date myDate = new Date(2016,05,8);
     public void testPostAnEvent()throws Exception
     {
-
+        repo = new PostAnEventRepositoryImp(App.getAppContext());
         PostAnEventService postAnEventService = PostAnEventServiceimpl.getInstance();
+
         PostAnEvent postAnEvent = new PostAnEvent.Builder()
                 .post("WE having fun")
                 .tagline("#wepartylikekings")
                 .date(myDate)
                 .build();
+
         postAnEventService.postEvent(App.getAppContext(), postAnEvent);
-       // Assert.assertNull(postAnEvent.getPost());
+
+
     }
 
-
-
     public void testSizeOfDatabase() throws Exception {
-  /*      Set<PostAnEvent> postAnEvents = repo.readAll();
-        Assert.assertEquals(postAnEvents.size(),10);
-*/
-      //  PostAnEvent postAnEvent = repo.read(1L);
-        //Assert.assertNotNull(postAnEvent.getTagline());
-    //    Assert.assertNull(postAnEvent.getPost());
+
+        Set<PostAnEvent> postAnEvents = repo.readAll();
+        Assert.assertEquals(postAnEvents.size(), 10);
+
     }
 }

@@ -28,7 +28,25 @@ public class CommentOnPostEventimplTest extends AndroidTestCase{
         repo = new CommentOnPostRepositoryImp(App.getAppContext());
     }
     Date myDate = new Date(2016,05,8);
-    public void testComment ()throws Exception
+
+    public void testComment ()throws Exception {
+        CommentOnPostService commentOnPostService = CommentOnPostServiceimpl.getInstance();
+
+        CommentOnPost commentOnPost = new CommentOnPost.Builder()
+                .post("Lol mate ")
+                .date(myDate)
+                .build();
+
+        commentOnPostService.postAnComment(App.getAppContext(), commentOnPost);
+        Assert.assertNotNull(commentOnPost);
+/*
+        Thread.sleep(1000);
+        CommentOnPost post = repo.read(1L);
+        Assert.assertNotNull(post);*/
+    }
+
+
+    public void testupdatePersonAddress() throws Exception
     {
         CommentOnPostService commentOnPostService = CommentOnPostServiceimpl.getInstance();
 
@@ -38,12 +56,14 @@ public class CommentOnPostEventimplTest extends AndroidTestCase{
                 .build();
 
         commentOnPostService.editComment(App.getAppContext(),commentOnPost);
-        Assert.assertNotNull(commentOnPost);
-
+//        App.getAppContext().startService(intent);
+        Assert.assertEquals("Lol mate ", commentOnPost.getPost());
     }
+
+
     public void testSizeDatabase()throws Exception
     {
-        Set<CommentOnPost> commentOnPostSet = repo.readAll();
-        Assert.assertEquals(commentOnPostSet.size(),0);
+        Set<CommentOnPost> commentOnPosts = repo.readAll();
+        Assert.assertEquals(commentOnPosts.size(),10);
     }
 }

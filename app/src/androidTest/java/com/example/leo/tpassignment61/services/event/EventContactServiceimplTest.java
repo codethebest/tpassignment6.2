@@ -27,7 +27,7 @@ public class EventContactServiceimplTest extends AndroidTestCase{
         repo = new EventContactRepositoryimpl(App.getAppContext());
     }
 
-    public void testcreatePersonContact() throws Exception
+    public void testcreateEventContact() throws Exception
     {
         intent = new Intent(App.getAppContext(), EventContactServiceimpl.class);
         EventContactService eventContactService = new EventContactServiceimpl();
@@ -39,30 +39,9 @@ public class EventContactServiceimplTest extends AndroidTestCase{
                 .build();
 
         eventContactService.addEventContact(App.getAppContext(), eventContact);
-        App.getAppContext().startService(intent);
         Assert.assertNotNull("Create", eventContact);
 
         Set<EventContact> eventContacts = repo.readAll();
         Assert.assertEquals(10, eventContacts.size());
     }
-/*
-    public void testupdate()throws Exception
-    {
-        intent = new Intent(App.getAppContext(),PersonAddressServicesImpl.class);
-        PersonContactService personContactService = new PersonContactServiceimpl();
-
-        PersonContact updatePersonContac = new PersonContact.Builder()
-                .mobile(7957813L)
-                .email("leo.moko8@gmail.com")
-                .website("www.google.com")
-                .screenName("leo")
-                .build();
-        personContactService.updatePersonContact(App.getAppContext(), updatePersonContac);
-        Assert.assertEquals("leo", updatePersonContac.getScreenName());
-    }*/
-    /*public void testSizeDatabase()throws Exception
-    {
-        Set<EventContact> eventContacts = repo.readAll();
-        Assert.assertEquals(eventContacts.size(),50);
-    }*/
 }

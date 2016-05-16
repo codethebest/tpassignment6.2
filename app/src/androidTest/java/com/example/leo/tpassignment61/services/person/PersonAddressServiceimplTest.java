@@ -38,6 +38,7 @@ public class PersonAddressServiceimplTest extends AndroidTestCase {
         PersonAddress address1 = repo.read(1L);
         Assert.assertNotNull(address1);
     }
+
     public void testupdatePersonAddress() throws Exception
     {
         intent = new Intent(App.getAppContext(),PersonAddressServicesImpl.class);

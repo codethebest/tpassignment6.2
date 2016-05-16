@@ -12,7 +12,8 @@ import com.example.leo.tpassignment61.services.person.PersonContactService;
 
 import java.sql.SQLException;
 
-/**
+/*** I used intent services because its a service that starts as needed,
+ * handles each Intent in turn using a worker thread, and stops itself when it runs out of work.
  * Created by Leo on 5/8/2016.
  */
 public class PersonContactServiceimpl extends IntentService implements PersonContactService {

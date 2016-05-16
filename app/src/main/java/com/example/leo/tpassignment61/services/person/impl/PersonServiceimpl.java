@@ -12,7 +12,8 @@ import com.example.leo.tpassignment61.services.person.PersonService;
 
 import java.sql.SQLException;
 
-/**
+/*** I used intent services because its a service that starts as needed,
+ * handles each Intent in turn using a worker thread, and stops itself when it runs out of work.
  * Created by Leo on 5/8/2016.
  */
 public class PersonServiceimpl extends IntentService implements PersonService{
@@ -73,7 +74,6 @@ public class PersonServiceimpl extends IntentService implements PersonService{
 
                 } else if (ACTION_UPDATE.equals(action)) {
                     final Person person = (Person) intent.getSerializableExtra(EXTRA_UPDATE);
-
                     Person updatePerson = new Person.Builder()
                             .name(person.getName())
                             .surname(person.getEmail())

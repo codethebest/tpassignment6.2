@@ -13,6 +13,8 @@ import com.example.leo.tpassignment61.services.user.UserRegistrationService;
 import java.sql.SQLException;
 
 /**
+ * I used intent services because its a service that starts as needed,
+ * handles each Intent in turn using a worker thread, and stops itself when it runs out of work.
  * Created by Leo on 5/8/2016.
  */
 public class UserRegistrationServiceimpl extends IntentService implements UserRegistrationService{
@@ -35,7 +37,7 @@ public class UserRegistrationServiceimpl extends IntentService implements UserRe
     }
 
     public UserRegistrationServiceimpl() {
-        super("PersonServiceimpl");
+        super("UserRegistrationServiceimpl");
         repo= new UserRegistrationRepositoryImp(App.getAppContext());
     }
 
@@ -52,7 +54,7 @@ public class UserRegistrationServiceimpl extends IntentService implements UserRe
     public void updateUser(Context context,UserRegistration address)
     {
         Intent intent =new Intent(context,UserRegistrationServiceimpl.class);
-        intent.setAction(ACTION_ADD);
+        intent.setAction(ACTION_UPDATE);
         intent.putExtra(EXTRA_UPDATE, address);
         context.startService(intent);
     }
@@ -70,8 +72,9 @@ public class UserRegistrationServiceimpl extends IntentService implements UserRe
                            .newPassword(userRegistrationResourse.getNewPassword())
                            .build();
                    repo.save(userRegistration);
+
                } else if (ACTION_UPDATE.equals(action)) {
-                   final UserRegistration userRegistrationResourse = (UserRegistration)intent.getSerializableExtra(EXTRA_ADD);
+                   final UserRegistration userRegistrationResourse = (UserRegistration)intent.getSerializableExtra(EXTRA_UPDATE);
                    UserRegistration updateRegistration = new UserRegistration.Builder()
                            .name(userRegistrationResourse.getName())
                            .gender(userRegistrationResourse.getGender())

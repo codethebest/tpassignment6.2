@@ -38,9 +38,8 @@ public class EventAddressServiceimplTest extends AndroidTestCase{
 
         personAddressService.addPEventAddress(App.getAppContext(), address);
 
-       /*EventAddress address1 = repo.read(1L);
-        Assert.assertNotNull(address1);*/
     }
+
     public void testSizeOfDatabase() throws Exception {
         Set<EventAddress> eventAddresses = repo.readAll();
         Assert.assertEquals(eventAddresses.size(),10);

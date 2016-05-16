@@ -3,6 +3,7 @@ package com.example.leo.tpassignment61.services.event.impl;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.example.leo.tpassignment61.conf.databases.App;
 import com.example.leo.tpassignment61.domain.event.Event;
@@ -13,7 +14,8 @@ import com.example.leo.tpassignment61.services.event.EventContactService;
 
 import java.sql.SQLException;
 
-/**
+/*** I used intent services because its a service that starts as needed,
+ * handles each Intent in turn using a worker thread, and stops itself when it runs out of work.
  * Created by Leo on 5/8/2016.
  */
 public class EventContactServiceimpl extends IntentService implements EventContactService {

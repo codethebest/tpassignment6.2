@@ -14,6 +14,8 @@ import com.example.leo.tpassignment61.services.person.PersonAddressService;
 import java.io.IOException;
 import java.sql.SQLException;
 
+/*** I used intent services because its a service that starts as needed,
+ * handles each Intent in turn using a worker thread, and stops itself when it runs out of work.*/
 public class PersonAddressServicesImpl extends IntentService implements PersonAddressService{
 
     private final PersonAddressRepository repo;

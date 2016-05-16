@@ -16,7 +16,6 @@ import java.util.*;
  * Created by Leo on 5/8/2016.
  **/
 public class UserRegistrationServiceimplTest extends AndroidTestCase{
-    Intent intent;
     UserRegistrationRepository repo;
 
     @Override
@@ -31,20 +30,20 @@ public class UserRegistrationServiceimplTest extends AndroidTestCase{
         UserRegistrationService userRegistrationService = UserRegistrationServiceimpl.getInstance();
 
         UserRegistration userRegistration = new UserRegistration.Builder()
-                .name("liyolo")
-                .useremail("leo1996")
-                .gender("male")
-                .newPassword("12sdf")
+                .newPassword("SDF12")
+                .gender("Male")
+                .useremail("Leo")
+                .name("Liyolo")
                 .build();
-
         userRegistrationService.addUser(App.getAppContext(),userRegistration);
+        Assert.assertNotNull(userRegistration);
 
     }
 
     public void testSizeDatabase ()throws Exception
     {
         Set<UserRegistration> userRegistrations = repo.readAll();
-        Assert.assertEquals(userRegistrations.size(),0);
+        Assert.assertEquals(userRegistrations.size(),5);
     }
 }
 

@@ -9,5 +9,5 @@ import com.example.leo.tpassignment61.domain.event.Event;
  */
 public interface EventService{
     void addEvent(Context context,Event event);
-    void updateEvent(Context context,Event event);
+    void updateEvent(Context context,Event Event);
 }

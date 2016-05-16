@@ -3,6 +3,7 @@ package com.example.leo.tpassignment61.services.user.impl;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.example.leo.tpassignment61.conf.databases.App;
 import com.example.leo.tpassignment61.domain.user.PostAnEvent;
@@ -13,6 +14,8 @@ import com.example.leo.tpassignment61.services.user.PostAnEventService;
 import java.sql.SQLException;
 
 /**
+ * * I used intent services because its a service that starts as needed,
+ * handles each Intent in turn using a worker thread, and stops itself when it runs out of work.
  * Created by Leo on 5/8/2016.
  */
 public class PostAnEventServiceimpl extends IntentService implements PostAnEventService {
@@ -42,6 +45,7 @@ public class PostAnEventServiceimpl extends IntentService implements PostAnEvent
     @Override
     public void postEvent(Context context,PostAnEvent address)
     {
+       Log.i("At Context", "Looking at editPost()");
         Intent intent = new Intent (context,PostAnEventServiceimpl.class);
         intent.setAction(ACTION_ADD);
         intent.putExtra(EXTRA_ADD, address);
@@ -51,16 +55,18 @@ public class PostAnEventServiceimpl extends IntentService implements PostAnEvent
     @Override
     public void editPost(Context context,PostAnEvent address)
     {
+
         Intent intent =new Intent(context,PostAnEventServiceimpl.class);
-        intent.setAction(ACTION_ADD);
+        intent.setAction(ACTION_UPDATE);
         intent.putExtra(EXTRA_UPDATE, address);
         context.startService(intent);
     }
     @Override
     protected void onHandleIntent(Intent intent) {
+        Log.i("Service strated","Im here");
         try{
             if (intent != null) {
-                final String action = intent.getAction();
+                String action = intent.getAction();
                 if (ACTION_ADD.equals(action)) {
                     final PostAnEvent postAnEventResourse = (PostAnEvent)intent.getSerializableExtra(EXTRA_ADD);
                     PostAnEvent postAnEvent = new PostAnEvent.Builder()
@@ -69,14 +75,15 @@ public class PostAnEventServiceimpl extends IntentService implements PostAnEvent
                             .date(postAnEventResourse.getDate())
                             .build();
                     repo.save(postAnEvent);
+                    Log.i("At onHandle", "started..................");
                 } else if (ACTION_UPDATE.equals(action)) {
-                    final PostAnEvent postAnEventResourse = (PostAnEvent)intent.getSerializableExtra(EXTRA_ADD);
+                    final PostAnEvent postAnEventResourse = (PostAnEvent)intent.getSerializableExtra(EXTRA_UPDATE);
                     PostAnEvent updatetAnEvent = new PostAnEvent.Builder()
                             .tagline(postAnEventResourse.getTagline())
                             .post(postAnEventResourse.getPost())
                             .date(postAnEventResourse.getDate())
                             .build();
-                    repo.save(updatetAnEvent);
+                    repo.update(updatetAnEvent);
                 }
             }
         }
@@ -85,6 +92,5 @@ public class PostAnEventServiceimpl extends IntentService implements PostAnEvent
             e.printStackTrace();
         }
     }
-
 }
 

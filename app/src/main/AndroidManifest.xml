@@ -16,6 +16,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service
+            android:name=".services.user.impl.PostAnEventServiceimpl"
+            android:enabled="true"
+            android:exported="true" />
+
 
         <service
             android:name=".services.MyService"
@@ -28,6 +33,18 @@
             android:name=".services.person.impl.PersonAddressServicesImpl"
             android:exported="false" />
         <service
+            android:name=".services.user.impl.UserRegistrationServiceimpl"
+            android:exported="false" />
+        <service
+            android:name=".services.event.impl.EventServiceimpl"
+            android:exported="false"/>
+        <service
+            android:name=".services.event.impl.EventAddressServiceimpl"
+            android:exported="false"/>
+        <service
+            android:name=".services.event.impl.EventContactServiceimpl"
+            android:exported="false"/>
+        <service
             android:name=".services.person.impl.PersonContactServiceimpl"
             android:exported="false" />
         <service
@@ -37,8 +54,10 @@
             android:name=".services.user.impl.CommentOnPostServiceimpl"
             android:exported="false" />
         <service
-            android:name=".services.event.impl.EventBasicInformationServiceimpl"
-            android:exported="false"></service>
+            android:name=".services.event.impl.EventServiceimpl"
+            android:exported="false">
+
+        </service>
     </application>
 
 </manifest>

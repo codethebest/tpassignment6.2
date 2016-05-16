@@ -10,8 +10,10 @@ import com.example.leo.tpassignment61.repository.user.CommentOnPostRepository;
 import com.example.leo.tpassignment61.repository.user.impl.CommentOnPostRepositoryImp;
 import com.example.leo.tpassignment61.services.user.CommentOnPostService;
 
-import java.io.IOException;
-import java.sql.SQLException;
+/**
+* I used intent services because its a service that starts as needed,
+ * handles each Intent in turn using a worker thread, and stops itself when it runs out of work.
+ */
 
 public class CommentOnPostServiceimpl extends IntentService implements CommentOnPostService{
 
@@ -44,7 +46,7 @@ public class CommentOnPostServiceimpl extends IntentService implements CommentOn
 
     public void editComment(Context context, CommentOnPost comment) {
         Intent intent = new Intent(context, CommentOnPostServiceimpl.class);
-        intent.setAction(ACTION_POST);
+        intent.setAction(ACTION_EDIT);
         intent.putExtra(EXTRA_EDIT, comment);
         context.startService(intent);
     }
@@ -62,7 +64,7 @@ public class CommentOnPostServiceimpl extends IntentService implements CommentOn
                             .build();
                     repo.save(commentOnPost);
                 } else if (ACTION_EDIT.equals(action)) {
-                    final CommentOnPost commentOnPostResourse = (CommentOnPost) intent.getSerializableExtra(EXTRA_POST);
+                    final CommentOnPost commentOnPostResourse = (CommentOnPost) intent.getSerializableExtra(EXTRA_EDIT);
                     CommentOnPost commentOnPost = new CommentOnPost.Builder()
                             .post(commentOnPostResourse.getPost())
                             .date(commentOnPostResourse.getDate())
